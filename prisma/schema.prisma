@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("URI_DATABASE")
+}
+
+model Instalacao {
+  id         Int      @id @default(autoincrement())
+  nome       String
+  endereco   String
+  tipoLocal  String
+  telefone   BigInt
+  email      String
+  dataInicio DateTime
+  setores    Setor[]
+
+  @@map("instalacoes")
+}
+
+model Setor {
+  id           Int        @id @default(autoincrement())
+  instalacao   Instalacao @relation(fields: [instalacaoId], references: [id])
+  instalacaoId Int
+  nome         String
+  clientes     Cliente[]
+
+  @@map("setores")
+}
+
+model Cliente {
+  id               Int                @id @default(autoincrement())
+  setor            Setor              @relation(fields: [setorId], references: [id])
+  setorId          Int
+  nome             String
+  telefone         BigInt
+  email            String
+  status           Boolean
+  painelSolar      PainelSolar[]
+  energiaConsumida EnergiaConsumida[]
+
+  @@map("clientes")
+}
+
+model PainelSolar {
+  id                Int             @id @default(autoincrement())
+  cliente           Cliente         @relation(fields: [clienteId], references: [id])
+  clienteId         Int
+  capacidadeGeracao Int
+  energiaGerada     EnergiaGerada[]
+
+  @@map("paineisSolares")
+}
+
+model EnergiaGerada {
+  id                 Int         @id @default(autoincrement())
+  painelSolar        PainelSolar @relation(fields: [painelSolarId], references: [id])
+  painelSolarId      Int
+  dataDado           DateTime
+  energiaGerada      Int
+  temperaturaMomento Float
+
+  @@map("energiaGerada")
+}
+
+model EnergiaConsumida {
+  id               Int      @id @default(autoincrement())
+  cliente          Cliente  @relation(fields: [clienteId], references: [id])
+  clienteId        Int
+  dataDado         DateTime
+  energiaConsumida Int
+
+  @@map("energiaConsumida")
+}
+
+model energiaArmazenada {
+  id                Int      @id @default(autoincrement())
+  dataDado          DateTime
+  energiaArmazenada Int
+
+  @@map("energiaArmazenada")
+}
