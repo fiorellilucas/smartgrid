@@ -1,19 +1,10 @@
-const { Sequelize, DataTypes, Deferrable } = require('sequelize')
-require('dotenv').config()
+import { Sequelize, DataTypes, Deferrable } from "sequelize"
+import 'dotenv/config'
 
-URI_DATABASE = process.env.URI_DATABASE
-console.log(URI_DATABASE)
-
+const URI_DATABASE = process.env.URI_DATABASE
 const sequelize = new Sequelize(URI_DATABASE)
 
-try {
-    sequelize.authenticate()
-    console.log("Conectado ao BD")
-} catch (error) {
-    console.error("Não foi possivel conectar ao BD", error)
-}
-
-const Instalacao = sequelize.define('Instalacao', {
+export const Instalacao = sequelize.define('Instalacao', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -36,7 +27,7 @@ const Instalacao = sequelize.define('Instalacao', {
     }
 })
 
-const Setor = sequelize.define('Setor', {
+export const Setor = sequelize.define('Setor', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -55,7 +46,7 @@ const Setor = sequelize.define('Setor', {
     }
 })
 
-const Cliente = sequelize.define('Cliente', {
+export const Cliente = sequelize.define('Cliente', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -83,7 +74,7 @@ const Cliente = sequelize.define('Cliente', {
     }
 })
 
-const EnergiaConsumida = sequelize.define('EnergiaConsumida', {
+export const EnergiaConsumida = sequelize.define('EnergiaConsumida', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -102,7 +93,7 @@ const EnergiaConsumida = sequelize.define('EnergiaConsumida', {
     }
 })
 
-const PainelSolar = sequelize.define('PainelSolar', {
+export const PainelSolar = sequelize.define('PainelSolar', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -121,7 +112,7 @@ const PainelSolar = sequelize.define('PainelSolar', {
     }
 })
 
-const EnergiaGerada = sequelize.define('EnergiaGerada', {
+export const EnergiaGerada = sequelize.define('EnergiaGerada', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -143,7 +134,7 @@ const EnergiaGerada = sequelize.define('EnergiaGerada', {
     }
 })
 
-const EnergiaArmazenada = sequelize.define('EnergiaArmazenada', {
+export const EnergiaArmazenada = sequelize.define('EnergiaArmazenada', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -154,4 +145,3 @@ const EnergiaArmazenada = sequelize.define('EnergiaArmazenada', {
     }
 })
 
-sequelize.sync()
