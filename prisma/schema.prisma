@@ -12,7 +12,7 @@ model Instalacao {
   nome       String
   endereco   String
   tipoLocal  String
-  telefone   BigInt
+  telefone   String
   email      String
   dataInicio DateTime
   setores    Setor[]
@@ -35,7 +35,7 @@ model Cliente {
   setor            Setor              @relation(fields: [setorId], references: [id])
   setorId          Int
   nome             String
-  telefone         BigInt
+  telefone         String
   email            String
   status           Boolean
   painelSolar      PainelSolar[]
