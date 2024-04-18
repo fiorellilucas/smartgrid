@@ -1,3 +1,5 @@
 node_modules
 .env
 manipular_db.js
+py_script/venv
+py_script/teste.py
