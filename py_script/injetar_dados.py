@@ -56,6 +56,48 @@ def calcular_geracao_energia_atual(coeficientes, horario_atual: datetime.datetim
     return resultado_geracao_atual    
 
 
+def calcular_energia_consumida(horario_atual: datetime.datetime):
+    horario_decimal = float(horario_atual.hour) + float(horario_atual.minute/60)
+    
+    a: float
+    b: float
+    
+    def calculo(a, b, horario_decimal):
+        return a*horario_decimal + b
+    
+    if horario_decimal > 4 and horario_decimal <= 8:
+        a = 0.525
+        b = -1.9
+    
+    elif horario_decimal > 8 and horario_decimal <= 11:
+        a = -0.3
+        b = 4.8
+        
+    elif horario_decimal > 11 and horario_decimal <= 13:
+        a = 0.3
+        b = -1.8
+        
+    elif horario_decimal > 13 and horario_decimal <= 17:
+        a = -0.225
+        b = 5.025
+        
+    elif horario_decimal > 17 and horario_decimal <= 19:
+        a = 0.899
+        b = -14.1
+        
+    elif horario_decimal > 19 and horario_decimal <= 23:
+        a = -0.675
+        b = 15.825
+        
+    else: 
+        return 0.3
+    
+    return calculo(a, b, horario_decimal)
+
+
+ultimo_tempo = datetime.datetime.now()
+ultima_atualizacao = datetime.datetime.now()
+
 while True:
     
     horario_atual = datetime.datetime.now()
@@ -73,7 +115,10 @@ while True:
         cod_condicao_climatica = req_api_tempo["weather"][0]["id"]
         
         #APENAS PARA TESTE
-        coeficientes = calcular_coeficientes_funcao_energia_solar(500, 800)
-        print(calcular_geracao_energia_atual(coeficientes, horario_atual))
+        for painel in paineis_solares:
+            coeficientes = calcular_coeficientes_funcao_energia_solar(painel["capacidadeGeracao"], cod_condicao_climatica)
+            print(f'Painel {painel["id"]} está gerando {calcular_geracao_energia_atual(coeficientes, horario_atual)} W')
+        
+        print(f'Atualmente consumindo {calcular_energia_consumida(horario_atual)} kW')
 
         ultima_atualizacao = horario_atual
