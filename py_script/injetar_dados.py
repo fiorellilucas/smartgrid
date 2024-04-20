@@ -8,10 +8,8 @@ from sympy import *
 load_dotenv()
 
 URL_API_TEMPO = os.environ.get("URL_API_TEMPO")
+URL_API_PAINEIS_SOLARES = os.environ.get("URL_API_PAINEIS_SOLARES")
 INTERVALO_ATUALIZACOES_SEGUNDOS = 5
-
-ultimo_tempo = datetime.datetime.now()
-ultima_atualizacao = datetime.datetime.now()
 
 def calcular_coeficientes_funcao_energia_solar(capacidade_painel, cod_condicao_climatica):
     RAIZ_UM = 6
@@ -37,7 +35,7 @@ def calcular_coeficientes_funcao_energia_solar(capacidade_painel, cod_condicao_c
     else:
         PICO_VERTICE_Y = capacidade_painel*0.4
 
-    sistema = [Eq(0, - a*RAIZ_UM**2 + b*RAIZ_UM - c), Eq(PICO_VERTICE_Y, - a*PICO_VERTICE_X**2 + b*PICO_VERTICE_X - c), Eq(0, - a*RAIZ_DOIS**2 + b*RAIZ_DOIS - c)]
+    sistema = [Eq(0, a*RAIZ_UM**2 + b*RAIZ_UM + c), Eq(PICO_VERTICE_Y, a*PICO_VERTICE_X**2 + b*PICO_VERTICE_X + c), Eq(0, a*RAIZ_DOIS**2 + b*RAIZ_DOIS + c)]
     
     resolucao_sistema = linsolve(sistema, a, b, c)
     
@@ -50,7 +48,7 @@ def calcular_coeficientes_funcao_energia_solar(capacidade_painel, cod_condicao_c
 
 def calcular_geracao_energia_atual(coeficientes, horario_atual: datetime.datetime):
     horario_decimal = float(horario_atual.hour) + float(horario_atual.minute/60)
-    resultado_geracao_atual = -coeficientes["a"]*(horario_decimal**2) + coeficientes["b"]*horario_decimal - coeficientes["c"]
+    resultado_geracao_atual = coeficientes["a"]*(horario_decimal**2) + coeficientes["b"]*horario_decimal + coeficientes["c"]
     
     if resultado_geracao_atual <= 0:
         return 0
@@ -71,6 +69,7 @@ while True:
     if dif_tempo.seconds >= INTERVALO_ATUALIZACOES_SEGUNDOS:
         
         req_api_tempo = requests.get(URL_API_TEMPO).json()
+        paineis_solares = requests.get(URL_API_PAINEIS_SOLARES).json()
         cod_condicao_climatica = req_api_tempo["weather"][0]["id"]
         
         #APENAS PARA TESTE
