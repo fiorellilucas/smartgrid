@@ -55,7 +55,7 @@ def calcular_geracao_energia_atual(coeficientes, horario_atual: datetime.datetim
     if resultado_geracao_atual <= 0:
         return 0
     
-    return resultado_geracao_atual    
+    return float(resultado_geracao_atual)    
 
 
 def calcular_energia_consumida(horario_atual: datetime.datetime):
