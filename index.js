@@ -28,9 +28,9 @@ app.get("/clientes", async (req, res) => {
 })
 
 app.post("/clientes/consumo/:id", async (req, res) => {
-    cliente_id = req.body["clienteId"]
-    data_dado = new Date(req.body["dataDado"])
-    energia_consumida = req.body["energiaConsumida"]
+    let cliente_id = parseInt(req.params["id"])
+    let data_dado = new Date(req.body["dataDado"])
+    let energia_consumida = req.body["energiaConsumida"]
     await prisma.energiaConsumida.create({
         data: {
             clienteId: cliente_id,
@@ -47,16 +47,16 @@ app.get("/paineis", async (req, res) => {
 })
 
 app.post("/paineis/geracao/:id", async (req, res) => {
-    painel_id = req.body["painelId"]
-    data_dado = new Date(req.body["dataDado"])
-    energia_gerada = req.body["energiaGerada"]
+    let painel_id = parseInt(req.params["id"])
+    let data_dado = new Date(req.body["dataDado"])
+    let energia_gerada = req.body["energiaGerada"]
     await prisma.energiaGerada.create({
         data: {
             painelSolarId: painel_id,
             dataDado: data_dado,
-            energiaGerada: energia_gerada
+            energiaGerada: energia_gerada,
         }
-    })
+    }) 
     res.sendStatus(200)
 })
 
