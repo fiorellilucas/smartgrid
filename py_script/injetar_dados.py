@@ -1,5 +1,4 @@
 import requests
-from pprint import pprint
 from dotenv import load_dotenv
 import os
 import datetime
@@ -9,7 +8,10 @@ load_dotenv()
 
 URL_API_TEMPO = os.environ.get("URL_API_TEMPO")
 URL_API_PAINEIS_SOLARES = os.environ.get("URL_API_PAINEIS_SOLARES")
-INTERVALO_ATUALIZACOES_SEGUNDOS = 5
+URL_API_ENERGIA_GERADA = os.environ.get("URL_API_ENERGIA_GERADA")
+URL_API_CLIENTES = os.environ.get("URL_API_CLIENTES")
+URL_API_CLIENTES_CONSUMO = os.environ.get("URL_API_CLIENTES_CONSUMO")
+INTERVALO_ATUALIZACOES_SEGUNDOS = 300
 
 def calcular_coeficientes_funcao_energia_solar(capacidade_painel, cod_condicao_climatica):
     RAIZ_UM = 6
@@ -114,11 +116,34 @@ while True:
         paineis_solares = requests.get(URL_API_PAINEIS_SOLARES).json()
         cod_condicao_climatica = req_api_tempo["weather"][0]["id"]
         
-        #APENAS PARA TESTE
         for painel in paineis_solares:
             coeficientes = calcular_coeficientes_funcao_energia_solar(painel["capacidadeGeracao"], cod_condicao_climatica)
-            print(f'Painel {painel["id"]} está gerando {calcular_geracao_energia_atual(coeficientes, horario_atual)} W')
+            energia_gerada = calcular_geracao_energia_atual(coeficientes, horario_atual)
+            url_painel = f'{URL_API_ENERGIA_GERADA}{painel["id"]}'
+            data = {
+                "painelSolarId": painel["id"],
+                "dataDado": str(horario_atual),
+                "energiaGerada": energia_gerada
+            }   
+            requests.post(
+                url_painel,
+                json=data
+            )
+            
+        energia_consumida = calcular_energia_consumida(horario_atual)
         
-        print(f'Atualmente consumindo {calcular_energia_consumida(horario_atual)} kW')
+        clientes = requests.get(URL_API_CLIENTES).json()
+        for cliente in clientes:
+            url_clientes_consumo = f'{URL_API_CLIENTES_CONSUMO}{cliente["id"]}'
+            data = {
+                "clienteId": cliente["id"],
+                "dataDado": str(horario_atual),
+                "energiaConsumida": energia_consumida
+            }
+            requests.post(
+                url_clientes_consumo,
+                json=data
+            )
+
 
         ultima_atualizacao = horario_atual
