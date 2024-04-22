@@ -27,6 +27,16 @@ app.get("/clientes", async (req, res) => {
     res.send(clientes)
 })
 
+app.get("/clientes/consumo/:id", async (req, res) => {
+    let cliente_id = parseInt(req.params["id"])
+    let cliente_consumo = await prisma.energiaConsumida.findMany({
+        where: {
+            clienteId: cliente_id
+        }
+    })
+    res.send(cliente_consumo)
+})
+
 app.post("/clientes/consumo/:id", async (req, res) => {
     let cliente_id = parseInt(req.params["id"])
     let data_dado = new Date(req.body["dataDado"])
@@ -44,6 +54,16 @@ app.post("/clientes/consumo/:id", async (req, res) => {
 app.get("/paineis", async (req, res) => {
     let paineis = await prisma.painelSolar.findMany()
     res.send(paineis)
+})
+
+app.get("/paineis/geracao/:id", async (req, res) => {
+    let painel_id = parseInt(req.params["id"])
+    let painel_geracao = await prisma.energiaGerada.findMany({
+        where: {
+            painelSolarId: painel_id
+        }
+    })
+    res.send(painel_geracao)
 })
 
 app.post("/paineis/geracao/:id", async (req, res) => {
