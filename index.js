@@ -56,6 +56,27 @@ app.get("/paineis", async (req, res) => {
     res.send(paineis)
 })
 
+app.get("/paineis/geracao", async (req, res) => {
+    let data_geracao_atual = await prisma.energiaGerada.findFirst({
+        orderBy: [
+            {
+                dataDado: 'desc'
+            }
+        ]
+    })
+    data_geracao_atual = data_geracao_atual.dataDado
+    
+    let geracao_atual = await prisma.energiaGerada.findMany({
+        where: {
+            dataDado: {
+                equals: data_geracao_atual
+            }
+        }
+    })
+    
+    res.send(geracao_atual)
+})
+
 app.get("/paineis/geracao/:id", async (req, res) => {
     let painel_id = parseInt(req.params["id"])
     let painel_geracao = await prisma.energiaGerada.findMany({
