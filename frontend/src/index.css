@@ -8,3 +8,21 @@
   font-variation-settings:
     "slnt" 0;
 }
+
+body {
+  margin: 0
+}
+
+.flex-container {
+  display: flex;
+  margin: 3rem;
+  height: calc(100vh - 6rem);
+}
+
+.sidebar {
+  width: 25%;
+}
+
+.content {
+  width: 75%;
+}

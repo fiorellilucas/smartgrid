@@ -10,19 +10,21 @@ import './index.css'
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root/>
+    element: <h1>hello world</h1>
   },
   {
     path: "/dashboard",
-    element: <h1>dashboard</h1>
-  }, 
-  {
-    path: "/dashboard/visao-geral",
-    element: <h1>visão geral</h1>
-  },
-  {
-    path: "/dashboard/estatisticas",
-    element: <h1>estatísticas</h1>
+    element: <Root/>,
+    children: [
+      {
+        path: "visao-geral",
+        element: <h1>visão geral</h1>
+      },
+      {
+        path: "/dashboard/estatisticas",
+        element: <h1>estatísticas</h1>
+      }
+    ]
   }
 ])
 
