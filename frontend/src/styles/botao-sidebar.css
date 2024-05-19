@@ -1,0 +1,14 @@
+.botao-sidebar {
+  text-decoration: none;
+  background-color: #4F4F4F;
+  margin: 0.75rem;
+  height: 2rem;
+  line-height: 2rem;
+  text-align: center;
+  border-radius: 0.5rem;
+  width: 50%;
+}
+
+.botao-sidebar:visited {
+  color: #D5D5D5
+}
