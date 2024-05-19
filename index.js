@@ -1,11 +1,18 @@
 import express from "express"
 import { PrismaClient } from "@prisma/client"
+import cors from "cors"
 
 const app = express()
 const port = 3000
+const corsOptions = {
+  origin: "*",
+  credentials: true,
+  optionSuccessStatus: 200
+}
 
 const prisma = new PrismaClient()
 
+app.use(cors(corsOptions))
 app.use(express.json())
 
 app.get("/", (req, res) => {
