@@ -29,7 +29,8 @@ export default function VisaoGeral() {
       }
       ger = ger/1000
       setGeracaoTotal(ger.toLocaleString("pt-BR"))
-      setUltimaAtualizacao(new Date(geracao["geracaoAtual"][0]["dataDado"]))
+      
+      setUltimaAtualizacao(new Date(geracao["geracaoAtual"][0]["dataDado"]).toLocaleString("pt-BR"))
     }
 
     if (consumo["consumoAtual"] != undefined) {
@@ -47,7 +48,7 @@ export default function VisaoGeral() {
       <h1>{geracao["nome"] || "Carregando"}</h1>
       <p>Geração atual: {geracaoTotal} kW</p>
       <p>Consumo atual: {consumoTotal} kW</p>
-      <p>Dados atualizados em {ultimaAtualizacao == 0 ? "Carregando" : ultimaAtualizacao.toLocaleString("pt-BR")}</p>
+      <p>Dados atualizados em {ultimaAtualizacao == 0 ? "Carregando" : ultimaAtualizacao}</p>
     </div>
   )
 }
