@@ -140,7 +140,16 @@ app.get("/geracao/instalacoes/:id", async (req, res) => {
     }
   }
   )
-  res.send(geracaoAtual)
+
+  let geracaoInstalacao = await prisma.instalacao.findUnique({
+    where: {
+      id: instalacaoId
+    }
+  })
+
+  geracaoInstalacao["geracaoAtual"] = geracaoAtual
+
+  res.send(geracaoInstalacao)
 })
 
 app.get("/consumo/instalacoes/:id", async (req, res) => {
@@ -173,7 +182,16 @@ app.get("/consumo/instalacoes/:id", async (req, res) => {
     }
   }
   )
-  res.send(consumoAtual)
+
+  let consumoInstalacao = await prisma.instalacao.findUnique({
+    where: {
+      id: instalacaoId
+    }
+  })
+
+  consumoInstalacao["consumoAtual"] = consumoAtual
+
+  res.send(consumoInstalacao)
 })
 
 app.listen(port, () => {
