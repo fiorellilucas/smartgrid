@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react"
+import GraficoGeracaoRecente from "../components/grafico-geracao-recente"
+import GraficoConsumoRecente from "../components/grafico-consumo-recente"
 
 export default function Estatisticas() {
 
@@ -19,12 +21,16 @@ export default function Estatisticas() {
   }, [])
 
   useEffect(() => {
-    // renderizar grafico
+    // grafico?
   }, [geracao, consumo])
 
   return (
     <div>
       <h1>{geracao["nome"] || "Carregando"}</h1>
+      <div>
+        <GraficoGeracaoRecente geracao={geracao} />
+        <GraficoConsumoRecente consumo={consumo} />
+      </div>
     </div>
   )
 }
