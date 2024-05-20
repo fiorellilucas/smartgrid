@@ -160,10 +160,10 @@ app.get("/geracao/recente/instalacoes/:id", async (req, res) => {
       }
     ]
   })
-  
+
   ultimaAtualizacao = ultimaAtualizacao.dataDado
-  ultimaAtualizacao.setHours(ultimaAtualizacao.getHours() - 3) 
-  
+  ultimaAtualizacao.setHours(ultimaAtualizacao.getHours() - 3)
+
   let geracaoRecente = await prisma.energiaGerada.groupBy({
     by: ["dataDado"],
     _sum: {
@@ -189,14 +189,23 @@ app.get("/geracao/recente/instalacoes/:id", async (req, res) => {
     }
   }
   )
-  
+
   let geracaoInstalacao = await prisma.instalacao.findUnique({
     where: {
       id: instalacaoId
     }
   })
-  
-  geracaoInstalacao["geracaoRecente"] = geracaoRecente
+
+  let geracaoRecenteFormatada = []
+  for (let i = 0; i < geracaoRecente.length; i++) {
+    let ger = {
+      "energiaGerada": geracaoRecente[i]["_sum"]["energiaGerada"],
+      "dataDado": geracaoRecente[i]["dataDado"]
+    }
+    geracaoRecenteFormatada.push(ger)
+  }
+
+  geracaoInstalacao["geracaoRecente"] = geracaoRecenteFormatada
   res.send(geracaoInstalacao)
 })
 
@@ -250,10 +259,10 @@ app.get("/consumo/recente/instalacoes/:id", async (req, res) => {
       }
     ]
   })
-  
+
   ultimaAtualizacao = ultimaAtualizacao.dataDado
   ultimaAtualizacao.setHours(ultimaAtualizacao.getHours() - 3)
-  
+
   let consumoRecente = await prisma.energiaConsumida.groupBy({
     by: ["dataDado"],
     _sum: {
@@ -276,14 +285,23 @@ app.get("/consumo/recente/instalacoes/:id", async (req, res) => {
       ]
     },
   })
-  
+
   let consumoInstalacao = await prisma.instalacao.findUnique({
     where: {
       id: instalacaoId
     }
   })
-  
-  consumoInstalacao["consumoRecente"] = consumoRecente
+
+  let consumoRecenteFormatado = []
+  for (let i = 0; i < consumoRecente.length; i++) {
+    let con = {
+      "energiaConsumida": consumoRecente[i]["_sum"]["energiaConsumida"],
+      "dataDado": consumoRecente[i]["dataDado"]
+    }
+    consumoRecenteFormatado.push(con)
+  }
+
+  consumoInstalacao["consumoRecente"] = consumoRecenteFormatado
   res.send(consumoInstalacao)
 })
 
