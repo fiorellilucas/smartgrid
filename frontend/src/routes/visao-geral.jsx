@@ -27,8 +27,8 @@ export default function VisaoGeral() {
       for (let i = 0; i < geracao["geracaoAtual"].length; i++) {
         ger += geracao["geracaoAtual"][i]["energiaGerada"]
       }
-      ger = Math.round(ger / 1000)
-      setGeracaoTotal(ger)
+      ger = ger/1000
+      setGeracaoTotal(ger.toLocaleString("pt-BR"))
       setUltimaAtualizacao(new Date(geracao["geracaoAtual"][0]["dataDado"]))
     }
 
@@ -37,8 +37,7 @@ export default function VisaoGeral() {
       for (let i = 0; i < consumo["consumoAtual"].length; i++) {
         con += consumo["consumoAtual"][i]["energiaConsumida"]
       }
-      con = Math.round(con)
-      setConsumoTotal(con)
+      setConsumoTotal(con.toLocaleString("pt-BR"))
     }
 
   }, [consumo, geracao])
