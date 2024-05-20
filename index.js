@@ -148,7 +148,51 @@ app.get("/geracao/instalacoes/:id", async (req, res) => {
   })
 
   geracaoInstalacao["geracaoAtual"] = geracaoAtual
+  res.send(geracaoInstalacao)
+})
 
+app.get("/geracao/recente/instalacoes/:id", async (req, res) => {
+  let instalacaoId = parseInt(req.params["id"])
+  let ultimaAtualizacao = await prisma.energiaGerada.findFirst({
+    orderBy: [
+      {
+        dataDado: 'desc'
+      }
+    ]
+  })
+  
+  ultimaAtualizacao = ultimaAtualizacao.dataDado
+  ultimaAtualizacao.setHours(ultimaAtualizacao.getHours() - 3) 
+  
+  let geracaoRecente = await prisma.energiaGerada.findMany({
+    where: {
+      AND: [
+        {
+          dataDado: {
+            gte: ultimaAtualizacao
+          }
+        },
+        {
+          painelSolar: {
+            cliente: {
+              setor: {
+                instalacaoId: instalacaoId
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+  )
+  
+  let geracaoInstalacao = await prisma.instalacao.findUnique({
+    where: {
+      id: instalacaoId
+    }
+  })
+  
+  geracaoInstalacao["geracaoRecente"] = geracaoRecente
   res.send(geracaoInstalacao)
 })
 
@@ -190,7 +234,49 @@ app.get("/consumo/instalacoes/:id", async (req, res) => {
   })
 
   consumoInstalacao["consumoAtual"] = consumoAtual
+  res.send(consumoInstalacao)
+})
 
+app.get("/consumo/recente/instalacoes/:id", async (req, res) => {
+  let instalacaoId = parseInt(req.params["id"])
+  let ultimaAtualizacao = await prisma.energiaGerada.findFirst({
+    orderBy: [
+      {
+        dataDado: 'desc'
+      }
+    ]
+  })
+  
+  ultimaAtualizacao = ultimaAtualizacao.dataDado
+  ultimaAtualizacao.setHours(ultimaAtualizacao.getHours() - 3)
+  
+  let consumoRecente = await prisma.energiaConsumida.findMany({
+    where: {
+      AND: [
+        {
+          dataDado: {
+            gte: ultimaAtualizacao
+          }
+        },
+        {
+          cliente: {
+            setor: {
+              instalacaoId: instalacaoId
+            }
+          }
+        }
+      ]
+    }
+  }
+  )
+  
+  let consumoInstalacao = await prisma.instalacao.findUnique({
+    where: {
+      id: instalacaoId
+    }
+  })
+  
+  consumoInstalacao["consumoRecente"] = consumoRecente
   res.send(consumoInstalacao)
 })
 
