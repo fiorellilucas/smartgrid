@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import Root from './routes/root.jsx'
 import VisaoGeral from './routes/visao-geral.jsx'
+import Estatisticas from './routes/estatisticas.jsx'
 import { 
   createBrowserRouter,
   RouterProvider
@@ -23,7 +24,7 @@ const router = createBrowserRouter([
       },
       {
         path: "estatisticas",
-        element: <h1>estatísticas</h1>
+        element: <Estatisticas />
       }
     ]
   }
