@@ -164,7 +164,11 @@ app.get("/geracao/recente/instalacoes/:id", async (req, res) => {
   ultimaAtualizacao = ultimaAtualizacao.dataDado
   ultimaAtualizacao.setHours(ultimaAtualizacao.getHours() - 3) 
   
-  let geracaoRecente = await prisma.energiaGerada.findMany({
+  let geracaoRecente = await prisma.energiaGerada.groupBy({
+    by: ["dataDado"],
+    _sum: {
+      energiaGerada: true
+    },
     where: {
       AND: [
         {
@@ -250,7 +254,11 @@ app.get("/consumo/recente/instalacoes/:id", async (req, res) => {
   ultimaAtualizacao = ultimaAtualizacao.dataDado
   ultimaAtualizacao.setHours(ultimaAtualizacao.getHours() - 3)
   
-  let consumoRecente = await prisma.energiaConsumida.findMany({
+  let consumoRecente = await prisma.energiaConsumida.groupBy({
+    by: ["dataDado"],
+    _sum: {
+      energiaConsumida: true
+    },
     where: {
       AND: [
         {
@@ -266,9 +274,8 @@ app.get("/consumo/recente/instalacoes/:id", async (req, res) => {
           }
         }
       ]
-    }
-  }
-  )
+    },
+  })
   
   let consumoInstalacao = await prisma.instalacao.findUnique({
     where: {
