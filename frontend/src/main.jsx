@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import Root from './routes/root.jsx'
+import VisaoGeral from './routes/visao-geral.jsx'
 import { 
   createBrowserRouter,
   RouterProvider
@@ -14,11 +15,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <Root/>,
+    element: <Root />,
     children: [
       {
         path: "visao-geral",
-        element: <h1>visão geral</h1>
+        element: <VisaoGeral />
       },
       {
         path: "estatisticas",
