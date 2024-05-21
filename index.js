@@ -199,7 +199,7 @@ app.get("/geracao/recente/instalacoes/:id", async (req, res) => {
   let geracaoRecenteFormatada = []
   for (let i = 0; i < geracaoRecente.length; i++) {
     let ger = {
-      "energiaGerada": geracaoRecente[i]["_sum"]["energiaGerada"],
+      "energiaGerada": geracaoRecente[i]["_sum"]["energiaGerada"]/1000,
       "dataDado": geracaoRecente[i]["dataDado"]
     }
     geracaoRecenteFormatada.push(ger)
