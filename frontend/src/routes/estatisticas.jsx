@@ -27,9 +27,15 @@ export default function Estatisticas() {
   return (
     <div>
       <h1>{geracao["nome"] || "Carregando"}</h1>
-      <div>
-        <GraficoGeracaoRecente geracao={geracao} />
-        <GraficoConsumoRecente consumo={consumo} />
+      <div className="graficos-container">
+        <div>
+          <h3>Geração (últimas 3 horas)</h3>
+          <GraficoGeracaoRecente geracao={geracao} />
+        </div>
+        <div>
+          <h3>Consumo (últimas 3 horas)</h3>
+          <GraficoConsumoRecente consumo={consumo} />
+        </div>
       </div>
     </div>
   )
