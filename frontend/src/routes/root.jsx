@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import BotaoSidebar from "../components/botao-sidebar";
 
 export default function Root() {
@@ -10,6 +10,7 @@ export default function Root() {
       </div>
       <div className="content" id="detail">
         <Outlet />
+        <Navigate to={"visao-geral"} />
       </div>
     </div>
   )
