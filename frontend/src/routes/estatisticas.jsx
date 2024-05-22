@@ -8,7 +8,7 @@ export default function Estatisticas() {
   const [consumo, setConsumo] = useState([])
 
   useEffect(() => {
-    async function fetchDadosAtuais() {
+    async function fetchDadosRecentes() {
       let responseGeracao = await fetch("http://localhost:3000/geracao/recente/instalacoes/1")
       let geracaoJson = await responseGeracao.json()
       setGeracao(geracaoJson)
@@ -17,7 +17,7 @@ export default function Estatisticas() {
       let consumoJson = await responseConsumo.json()
       setConsumo(consumoJson)
     }
-    fetchDadosAtuais()
+    fetchDadosRecentes()
   }, [])
 
   useEffect(() => {
@@ -27,16 +27,6 @@ export default function Estatisticas() {
   return (
     <div>
       <h1>{geracao["nome"] || "Carregando"}</h1>
-      <div className="graficos-container">
-        <div>
-          <h3>Geração (últimas 3 horas)</h3>
-          <GraficoGeracaoRecente geracao={geracao} />
-        </div>
-        <div>
-          <h3>Consumo (últimas 3 horas)</h3>
-          <GraficoConsumoRecente consumo={consumo} />
-        </div>
-      </div>
     </div>
   )
 }

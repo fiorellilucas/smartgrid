@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react"
+import GraficoGeracaoRecente from "../components/grafico-geracao-recente"
+import GraficoConsumoRecente from "../components/grafico-consumo-recente"
 
 export default function VisaoGeral() {
 
@@ -49,6 +51,14 @@ export default function VisaoGeral() {
       <p>Geração atual: {geracaoTotal} kW</p>
       <p>Consumo atual: {consumoTotal} kW</p>
       <p>Dados atualizados em {ultimaAtualizacao == 0 ? "Carregando" : ultimaAtualizacao}</p>
+      <div className="graficos-container">
+        <div>
+          <GraficoGeracaoRecente geracao={geracao} />
+        </div>
+        <div>
+          <GraficoConsumoRecente consumo={consumo} />
+        </div>
+      </div>
     </div>
   )
 }
