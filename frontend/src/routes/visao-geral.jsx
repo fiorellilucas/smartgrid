@@ -53,10 +53,10 @@ export default function VisaoGeral() {
       <p>Dados atualizados em {ultimaAtualizacao == 0 ? "Carregando" : ultimaAtualizacao}</p>
       <div className="graficos-container">
         <div>
-          <GraficoGeracaoRecente geracao={geracao} />
+          <GraficoGeracaoRecente />
         </div>
         <div>
-          <GraficoConsumoRecente consumo={consumo} />
+          <GraficoConsumoRecente />
         </div>
       </div>
     </div>
